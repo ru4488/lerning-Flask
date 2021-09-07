@@ -3,3 +3,4 @@ env/
 python.org.html
 config.py
 webapp.db
+*.db
