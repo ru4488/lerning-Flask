@@ -4,3 +4,4 @@ python.org.html
 config.py
 webapp.db
 *.db
+*.html
