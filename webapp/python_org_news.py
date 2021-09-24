@@ -2,7 +2,7 @@
 from datetime import datetime 
 import requests
 from bs4 import BeautifulSoup
-from model import db , News
+from webapp.model import db , News
 
 def get_html(url):
     try:
@@ -45,5 +45,3 @@ def save_news(title , url , published):
         db.session.commit()
 
 
-if __name__ == "__main__":
-    get_python_news()
