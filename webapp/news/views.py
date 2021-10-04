@@ -12,4 +12,4 @@ def index():
     tittle = "Новости Python"
     news_list =  News.query.order_by(News.published.desc()).all()
    
-    return render_template("index.html ", page_tittle = tittle , weather = weather , news_list = news_list )
+    return render_template("news/index.html ", page_tittle = tittle , weather = weather , news_list = news_list )
