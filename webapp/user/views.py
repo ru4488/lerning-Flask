@@ -10,7 +10,7 @@ blueprint = Blueprint('user', __name__, url_prefix='/users')
 def login():
 
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect(url_for('news.index'))
     title = "Авотризация"
     login_form = LoginForm()
     return render_template('login.html', page_title=title, form=login_form)
@@ -24,7 +24,7 @@ def process_login():
         if user and user.check_password(form.password.data):
             login_user(user , remember=form.remember_me.data)
             flash('Вы вошли на сайт')
-            return redirect(url_for('index'))
+            return redirect(url_for('news.index'))
     
     flash('Неправильное имя пользователя или пароль')
     return redirect(url_for('user.login'))
@@ -33,4 +33,4 @@ def process_login():
 def logout():
     logout_user()
     flash('Досвидания')
-    return redirect(url_for('index'))
+    return redirect(url_for('news.index'))

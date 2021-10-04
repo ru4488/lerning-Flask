@@ -1,5 +1,5 @@
 from flask import Flask  , render_template , flash, redirect, url_for
-from flask_login import current_user , LoginManager , login_required  
+from flask_login import current_user , LoginManager , login_required   
 
 from webapp.db import db 
 
