@@ -1,7 +1,10 @@
-from flask import abort , Blueprint , current_app , render_template
-
-from webapp.news.models import News
+from flask import abort , Blueprint , flash ,  current_app , render_template , redirect, request, url_for
+from flask_login import current_user , login_required
+from webapp.db import db
+from webapp.news.forms import CommentForm
+from webapp.news.models import Comment , News
 from webapp.weather import weather_by_city
+from webapp.utils import get_redirect_target
 
 blueprint = Blueprint('news', __name__)
 
@@ -20,7 +23,25 @@ def single_news(news_id):
 
     if not my_news:
         abort(404)
+    comment_form = CommentForm(news_id = my_news.id)
+    return render_template("news/single_news.html" , page_title = my_news.title , news = my_news , comment_form = comment_form)
 
-    return render_template("news/single_news.html" , page_title = my_news.title , news = my_news)
+@blueprint.route("/news/comment" , methods=["POST"])
+@login_required
+def add_comment():
+    form = CommentForm()
+    if form.validate_on_submit():
+        if News.query.filter(News.id == form.news_id.data).first():
+            comment = Comment(text=form.comment_text.data, news_id=form.news_id.data, user_id=current_user.id)
+            db.session.add(comment)
+            db.session.commit()
+            flash('Комментарий успешно добавлен')
+    else:
+        for field , errors in form.errors.items():
+            for error in errors:
+                flash("Ошибка в поле {}: {}".format(
+                    getattr(form , field).label.text, 
+                    error
+                ))
 
-
+    return redirect(get_redirect_target())
